@@ -1,0 +1,133 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <table border="1">
+            <tr>
+                <td colspan="5">
+                    <input type="text" id="inputBox" value="0"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="digitButton" onclick="digitBtnPressed(7)">7</td>
+                <td class="digitButton" onclick="digitBtnPressed(8)">8</td>
+                <td class="digitButton" onclick="digitBtnPressed(9)">9</td>
+                <td class="operatorButton" onclick="operatorBtnPressed('*')">x</td>
+                <td class="backButton" onclick="btnBackPressed()">⌫</td>
+            </tr>
+            <tr>
+                <td class="digitButton" onclick="digitBtnPressed(4)">4</td>
+                <td class="digitButton" onclick="digitBtnPressed(5)">5</td>
+                <td class="digitButton" onclick="digitBtnPressed(6)">6</td>
+                <td class="operatorButton" onclick="operatorBtnPressed('-')">-</td>
+                <td class="operatorButton" onclick="operatorBtnPressed('^2')">^2</td>
+            </tr>
+            <tr>
+                <td class="digitButton" onclick="digitBtnPressed(1)">1</td>
+                <td class="digitButton" onclick="digitBtnPressed(2)">2</td>
+                <td class="digitButton" onclick="digitBtnPressed(3)">3</td>
+                <td class="operatorButton" onclick="operatorBtnPressed('+')">+</td>
+                <td class="operatorButton" onclick="operatorBtnPressed('^3')">^3</td>
+            </tr>
+            <tr>
+                <td class="digitButton" colspan="2" onclick="digitBtnPressed(0)">0</td>
+
+                <td class="ACButton" onclick="btnACPressed()">AC</td>
+                <td class="operatorButton" onclick="operatorBtnPressed('/')">/</td>
+                <td class="operatorButton" onclick="operatorBtnPressed('^n')">^n</td>
+            </tr>
+            <tr>
+                <td class="operatorButton" colspan="5" onclick="equalsBtnPressed()">=</td>
+            </tr>
+        </table>
+
+        <script>
+            
+            var newLine = true; //Boolean variable. Determines if the next thing the user types should be on a new line
+            var value1;
+            var currentOperator;
+
+            //Event handler for when and digit button is pressed
+            function digitBtnPressed(button){
+
+                if(newLine){
+                    document.getElementById("inputBox").value = button;
+                    newLine = false;
+                } else{
+                    var currentValue = document.getElementById("inputBox").value;
+                document.getElementById("inputBox").value = currentValue + button;
+                }
+            }
+
+            //Event handler for when the AC buttonis pressed
+            function btnACPressed(){
+                document.getElementById("inputBox").value = 0;
+                newLine = true;
+            }
+
+            function operatorBtnPressed(operator){
+                currentOperator = operator;
+                value1 = parseInt(document.getElementById("inputBox").value);
+                newLine = true;
+            }
+
+            //Event handler for back button
+            function btnBackPressed() {
+                var inputBox = document.getElementById("inputBox");
+                var currentValue = inputBox.value;
+
+                if (newLine || currentValue === "0") {
+                    return;
+                }
+
+                // Remove the last character
+                var updatedValue = currentValue.slice(0, -1);
+
+                // If nothing left, reset to 0
+                if (updatedValue === "") {
+                     inputBox.value = "0";
+                    newLine = true;
+                } else {
+                    inputBox.value = updatedValue;
+                }
+            }
+
+
+            //Event handler for equals to button
+            function equalsBtnPressed(){
+                var value2 = parseInt(document.getElementById("inputBox").value);
+                var finalTotal;
+
+                switch(currentOperator){
+                    case "+":
+                        finalTotal = value1 + value2;
+                        break;
+                    case "-":
+                        finalTotal = value1 - value2;
+                        break;
+                    case "/":
+                        finalTotal = value1 / value2;
+                        break;
+                    case "*":
+                        finalTotal = value1 * value2;
+                        break;
+                    case "^2":
+                        finalTotal = value1 ** 2;
+                        break;
+                    case "^3":
+                        finalTotal = value1 ** 3;
+                        break;
+                    case "^n":
+                        finalTotal = value1 ** value2;
+                        break;
+                }
+                document.getElementById("inputBox").value = finalTotal;
+
+                value1 = 0;
+                newLine = true;
+            }
+
+        </script>
+    </body>
+</html>
